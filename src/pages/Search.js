@@ -6,7 +6,8 @@ import GridView from "../components/elements/GridView";
 function Search({ data = "true" }) {
   const [dogs, setDogs] = useState([]);
   const [nameInput, setNameInput] = useState("")
-  const [filters, setFilters] = useState({minHeight: 5, maxHeight: 120, minWeight: 1, maxWeight: 120, lifespan: null, temperament: []})
+  const [filters, setFilters] = useState({minHeight: 5, maxHeight: 120, minWeight: 1, maxWeight: 120, lifespan: null, breedGroup: ""})
+  const [temperament, setTemperament] = useState([])
   let typingDebouncer;
 
   useEffect(() => {
@@ -57,8 +58,8 @@ function Search({ data = "true" }) {
     if (!regExp.test(dogBreed.name)) return false;
     
     const matchesWeight = dogBreed.weight.metric.split(" ")[0] >= filters.minWeight && dogBreed.weight.metric.split(" ")[2] <= filters.maxWeight;
-    const matchesHeight = dogBreed.weight.metric.split(" ")[0] >= filters.minWeight && dogBreed.weight.metric.split(" ")[2] <= filters.maxWeight;
-    return matchesWeight;
+    const matchesHeight = dogBreed.height.metric.split(" ")[0] >= filters.minHeight && dogBreed.height.metric.split(" ")[2] <= filters.maxHeight;
+    return matchesWeight && matchesHeight;
   }
 
   return (
