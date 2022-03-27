@@ -7,6 +7,7 @@ import styles from "./Search.module.css"
 function Search({ data = "true" }) {
   const [dogs, setDogs] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
+  const [page, setPage] = useState(0)
 
   const [nameInput, setNameInput] = useState("")
   const [filters, setFilters] = useState({minHeight: 5, maxHeight: 100, minWeight: 1, maxWeight: 120, lifespan: null, breedGroup: "All"})
@@ -14,39 +15,46 @@ function Search({ data = "true" }) {
   let debouncer;
 
   useEffect(() => {
-    getAllBreeds();
-  }, [data])
+    getBreeds();
+    setPage(prevPage => prevPage + 1);
+  }, [])
 
   useEffect(() => {
-    console.log(nameInput)
-  }, [nameInput])
+    window.addEventListener("scroll", handleScrolling);
+    return () => window.removeEventListener("scroll", handleScrolling);
+  }, [page])
+
+  useEffect(() => {
+    console.log(dogs)
+  }, [dogs])
 
   useEffect(() => {
     console.log(filters)
   }, [filters])
-
+  
   const handleScrolling = () => {
     console.log("scrolling")
-    if (window.innerHeight + document.documentElement.scrollTop + 1 >= document.documentElement.scrollHeight - 30){
+    console.log("Page1", page)
+    if (window.innerHeight + document.documentElement.scrollTop + 1 >= document.documentElement.scrollHeight){
       console.log("reached the bottom")
+      console.log("Page2", page)
       setIsFetching(true);
+      setTimeout(() => getBreeds(), 500);
+      setPage(prevPage => prevPage + 1);
     }
   }
 
-  useEffect(() => {
-    window.addEventListener("scroll", handleScrolling);
-  }, []);
-
-  const getAllBreeds = () => {
-    fetch("https://api.thedogapi.com/v1/breeds", {
+  const getBreeds = () => {
+    console.log(page);
+    fetch(`https://api.thedogapi.com/v1/breeds?limit=12&page=${page}`, {
       headers: {
         "X-Api-Key": process.env.REACT_APP_DOGS_KEY
       },
     })
       .then(res => {
         res.json().then(data => {
-          setDogs(data);
-          setIsFetching("false");
+          setDogs(previousState => [...previousState, ...data]);
+          setIsFetching(false);
           console.log(data)
         })
       })
@@ -122,7 +130,7 @@ function Search({ data = "true" }) {
         </div>
       </div>
 
-      <GridView data={dogs.filter(dog => matchesUserQuery(dog)).slice(0, 12)}/>
+      <GridView data={dogs.filter(dog => matchesUserQuery(dog))}/>
 
       {isFetching === true && (
         <div className={styles.loaderWrapper}>

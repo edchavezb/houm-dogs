@@ -9,9 +9,9 @@ function GridView({data}) {
 
   return (
     <div id='grid' className={styles.gridContainer}>
-      {data.map(e => {
+      {data.map((e, i) => {
           return (
-            <HeroCard key={e.id} breed={e}></HeroCard>
+            <HeroCard key={i} breed={e}></HeroCard>
           )
       })}
     </div>
