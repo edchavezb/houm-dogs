@@ -6,9 +6,9 @@ import GridView from "../components/elements/GridView";
 function Search({ data = "true" }) {
   const [dogs, setDogs] = useState([]);
   const [nameInput, setNameInput] = useState("")
-  const [filters, setFilters] = useState({minHeight: 5, maxHeight: 120, minWeight: 1, maxWeight: 120, lifespan: null, breedGroup: ""})
+  const [filters, setFilters] = useState({minHeight: 5, maxHeight: 100, minWeight: 1, maxWeight: 120, lifespan: null, breedGroup: ""})
   const [temperament, setTemperament] = useState([])
-  let typingDebouncer;
+  let debouncer;
 
   useEffect(() => {
     getAllBreeds();
@@ -40,16 +40,18 @@ function Search({ data = "true" }) {
   }
 
   const handleNameChange = (e) => {
-    clearTimeout(typingDebouncer);
-    typingDebouncer = setTimeout(() => setNameInput(e.target.value), 500);
+    clearTimeout(debouncer);
+    debouncer = setTimeout(() => setNameInput(e.target.value), 500);
   }
 
   const handleFilterChange = (e) => {
-    console.log(e.target.name, e.target.value);
-    let inputValue = e.target.type == "number" ? parseInt(e.target.value) : e.target.value;
+    clearTimeout(debouncer);
 
-    const newFilters = { ...filters, [e.target.name]: inputValue }
-    setFilters(newFilters);
+    debouncer = setTimeout(() => {
+      let inputValue = e.target.type == "number" ? parseInt(e.target.value) : e.target.value;
+      const newFilters = { ...filters, [e.target.name]: inputValue }
+      setFilters(newFilters);
+    }, 500);
   }
 
   const matchesUserQuery = (dogBreed) => {
@@ -59,7 +61,8 @@ function Search({ data = "true" }) {
     
     const matchesWeight = dogBreed.weight.metric.split(" ")[0] >= filters.minWeight && dogBreed.weight.metric.split(" ")[2] <= filters.maxWeight;
     const matchesHeight = dogBreed.height.metric.split(" ")[0] >= filters.minHeight && dogBreed.height.metric.split(" ")[2] <= filters.maxHeight;
-    return matchesWeight && matchesHeight;
+    const matchesLifespan = filters.lifespan ? filters.lifespan >= dogBreed.life_span.split(" ")[0] && filters.lifespan <= dogBreed.life_span.split(" ")[2] : true;
+    return matchesWeight && matchesHeight && matchesLifespan;
   }
 
   return (
@@ -71,13 +74,17 @@ function Search({ data = "true" }) {
       </div>
       <div>
         <label> Weight as adult (in kg): </label>
-        From <input name="minWeight" onChange={e => handleFilterChange(e)} type="number"></input>
-        To <input name="maxWeight" onChange={e => handleFilterChange(e)} type="number"></input>
+        From <input name="minWeight" onChange={e => handleFilterChange(e)} type="number" value={filters.minWeight}/>
+        To <input name="maxWeight" onChange={e => handleFilterChange(e)} type="number" value={filters.maxWeight}/>
       </div>
       <div>
         <label> Height as adult (in cm): </label>
-        From <input name="minHeight" onChange={e => handleFilterChange(e)} type="number"></input>
-        To <input name="maxHeight" onChange={e => handleFilterChange(e)} type="number"></input>
+        From <input name="minHeight" onChange={e => handleFilterChange(e)} type="number" value={filters.minHeight}/>
+        To <input name="maxHeight" onChange={e => handleFilterChange(e)} type="number" value={filters.maxHeight}/>
+      </div>
+      <div>
+        <label> Life expectancy (in years): </label>
+        <input name="lifespan" onChange={e => handleFilterChange(e)} type="number"></input>
       </div>
       <GridView data={dogs.filter(dog => matchesUserQuery(dog)).slice(0, 12)}/>
     </div>
