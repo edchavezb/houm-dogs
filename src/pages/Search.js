@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import GridView from "../components/elements/GridView";
 import styles from "./Search.module.css"
 
-function Search({ data = "true" }) {
+function Search() {
   const [dogs, setDogs] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
   const [page, setPage] = useState(0)
@@ -78,17 +78,23 @@ function Search({ data = "true" }) {
     }, 500);
   }
 
-  const matchesUserQuery = (dogBreed) => {
+  const matchesUserQuery = (breed) => {
     const nameFilter = nameInput ? nameInput : '[a-z]+';
     const regExp = new RegExp(nameFilter, 'gi');
-    if (!regExp.test(dogBreed.name)) return false;
-    
-    const matchesWeight = dogBreed.weight.metric.split(" ")[0] >= filters.minWeight && dogBreed.weight.metric.split(" ")[2] <= filters.maxWeight;
-    const matchesHeight = dogBreed.height.metric.split(" ")[0] >= filters.minHeight && dogBreed.height.metric.split(" ")[2] <= filters.maxHeight;
-    const matchesLifespan = filters.lifespan ? filters.lifespan >= dogBreed.life_span.split(" ")[0] && filters.lifespan <= dogBreed.life_span.split(" ")[2] : true;
-    const matchesBreedGroup = filters.breedGroup !== "All" ? dogBreed.breed_group === filters.breedGroup : true;
+    if (!regExp.test(breed.name)) return false;
 
-    return matchesWeight && matchesHeight && matchesLifespan && matchesBreedGroup;
+    // Breed id 3 has a different string format for height and lifespan so values are assigned manually.
+    // Otherwise destructure split string.
+    const [breedMinLife, , breedMaxLife] = breed.id === 3 || breed.id === 30? [11, 0, 11] : breed.life_span.split(" ");
+    const [breedMinHeight, , breedMaxHeight] = breed.id === 3 || breed.id === 30? [76, 0, 76] : breed.height.metric.split(" ");
+    const [breedMinWeight, , breedMaxWeight] =  breed.weight.metric.split(" ");
+    
+    const matchesLifespan = filters.lifespan ? filters.lifespan >= breedMinLife && filters.lifespan <= breedMaxLife : true;
+    const matchesHeight = breedMinHeight >= filters.minHeight && breedMaxHeight <= filters.maxHeight;
+    const matchesWeight = breedMinWeight >= filters.minWeight && breedMaxWeight <= filters.maxWeight;
+    const matchesBreedGroup = filters.breedGroup !== "All" ? breed.breed_group === filters.breedGroup : true;
+
+    return matchesLifespan && matchesHeight && matchesWeight  && matchesBreedGroup;
   }
 
   return (
