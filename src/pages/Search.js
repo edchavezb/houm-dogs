@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import { useEffect, useState } from 'react';
 
 import GridView from "../components/elements/GridView";
+import temperaments from "../Temperaments";
 import styles from "./Search.module.css"
 
 function Search() {
@@ -17,6 +18,7 @@ function Search() {
   useEffect(() => {
     getBreeds();
     setPage(prevPage => prevPage + 1);
+    console.log(temperaments)
   }, [])
 
   useEffect(() => {
@@ -28,6 +30,7 @@ function Search() {
 
   useEffect(() => {
     console.log(dogs)
+    console.log([...new Set(dogs.reduce((prev, curr) => [...prev, ...curr.temperament.split(", ")], []))].sort())
   }, [dogs])
 
   useEffect(() => {
@@ -82,7 +85,7 @@ function Search() {
     const regExp = new RegExp(nameFilter, 'gi');
     if (!regExp.test(breed.name)) return false;
 
-    // Breed id 3 and 30 have a different string format for height and lifespan so min and max are the same.
+    // Breed id 3 and 30 have a single number for height and lifespan so min and max are the same.
     // Otherwise destructure split string and ignore middle value.
     const [breedMinLife, , breedMaxLife] = breed.id === 3 || breed.id === 30? 
       [breed.life_span.split()[0], 0, breed.life_span.split()[0]] 
