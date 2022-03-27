@@ -12,9 +12,17 @@ function HeroCard({breed}) {
       </div>
       <div className={styles.breedInfo}>
         <span className={styles.breedName}> {breed.name} </span>
-        <div className={styles.heightWeight}>
-          <span> Height: {breed.height.metric} cm </span>
-          <span> Weight: {breed.weight.metric} kg</span>
+        <div className={styles.breedStats}>
+          <div className={styles.statsRow}><span>Altura:</span> <span>{breed.height.metric} cm</span></div>
+          <div className={styles.statsRow}><span>Peso:</span> <span>{breed.weight.metric} kg</span></div>
+          <div className={styles.statsRow}><span>Vida promedio:</span> <span>{breed.life_span.split(" ").slice(0, 3).join(" ")} años</span></div>
+        </div>
+        <div className={styles.temperContainer}>
+          {breed.temperament.split(", ").map(trait => {
+            return (
+              <div key={trait} className={styles.pill}>{`${trait}`}</div>
+            )
+          })}
         </div>
       </div>
       

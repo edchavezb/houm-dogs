@@ -1,5 +1,5 @@
 .card {
-    width: 24.25%;
+    width: 23.5%;
     overflow: hidden;
     border-radius: 5px;
     box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
@@ -23,8 +23,34 @@
 .breedName {
     font-weight: 600;
     font-size: 1.05em;
+    color: #212121
 }
 
-.heightWeigth {
-    font-size: .95em;
+.breedStats {
+    margin-top: 10px;
+    font-size: .8em;
+}
+
+.statsRow {
+    display: flex;
+    justify-content: space-between;
+    color: #212121
+
+}
+
+.temperContainer {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 2px;
+    row-gap: 2px;
+    margin-top: 13px;
+}
+
+.pill {
+    border-radius: 500px;
+    padding: 1px 6px;
+    background-color: #eceff1;
+    color: #607d8b;
+    font-size: .70em;
+    font-weight: 600;
 }
