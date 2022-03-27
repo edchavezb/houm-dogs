@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import { useEffect, useState } from 'react';
 
 import GridView from "../components/elements/GridView";
-import temperaments from "../Temperaments";
+import temperaments from "../temperaments";
 import styles from "./Search.module.css"
 
 function Search() {
@@ -109,7 +109,7 @@ function Search() {
     <div className="App">
       <h1> A house is not a houm without a dog </h1>
 
-      <div className={styles.filterSection}>
+      <div id={styles.filterSection}>
         <div>
           <label> Enter a breed's name: </label>
           <input onChange={e => handleNameChange(e)} type="text"></input>
@@ -141,6 +141,19 @@ function Search() {
             <option value="Toy">Toy</option>
             <option value="Working">Working</option>
           </select>
+        </div>
+      </div>
+
+      <div id={styles.temperSection}>
+        <div id={styles.temperToggle}>
+
+        </div>
+        <div id={styles.temperButtons}>
+          {temperaments.map(trait => {
+            return (
+              <button key={trait} className={styles.temperButton}> {trait} </button>
+            )
+          })}
         </div>
       </div>
 

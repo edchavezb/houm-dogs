@@ -15,6 +15,21 @@
     animation: spin 2s linear infinite;
 }
 
+.temperButton {
+    padding: 6px 10px;
+    color: #FF452B;
+    border: solid 1px #FF452B;
+    background-color: #ffffff;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: .7em;
+    font-weight: 600;
+}
+
+.temperButton:hover {
+    background-color: #eeeeee;
+}
+
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
