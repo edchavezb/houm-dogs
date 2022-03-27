@@ -20,8 +20,10 @@ function Search() {
   }, [])
 
   useEffect(() => {
-    window.addEventListener("scroll", handleScrolling);
-    return () => window.removeEventListener("scroll", handleScrolling);
+    if(page < 10) { // 10 reaches end of API resources
+      window.addEventListener("scroll", handleScrolling);
+      return () => window.removeEventListener("scroll", handleScrolling);
+    }
   }, [page])
 
   useEffect(() => {
@@ -33,11 +35,8 @@ function Search() {
   }, [filters])
   
   const handleScrolling = () => {
-    console.log("scrolling")
-    console.log("Page1", page)
+
     if (window.innerHeight + document.documentElement.scrollTop + 1 >= document.documentElement.scrollHeight){
-      console.log("reached the bottom")
-      console.log("Page2", page)
       setIsFetching(true);
       setTimeout(() => getBreeds(), 500);
       setPage(prevPage => prevPage + 1);
@@ -83,10 +82,16 @@ function Search() {
     const regExp = new RegExp(nameFilter, 'gi');
     if (!regExp.test(breed.name)) return false;
 
-    // Breed id 3 has a different string format for height and lifespan so values are assigned manually.
-    // Otherwise destructure split string.
-    const [breedMinLife, , breedMaxLife] = breed.id === 3 || breed.id === 30? [11, 0, 11] : breed.life_span.split(" ");
-    const [breedMinHeight, , breedMaxHeight] = breed.id === 3 || breed.id === 30? [76, 0, 76] : breed.height.metric.split(" ");
+    // Breed id 3 and 30 have a different string format for height and lifespan so min and max are the same.
+    // Otherwise destructure split string and ignore middle value.
+    const [breedMinLife, , breedMaxLife] = breed.id === 3 || breed.id === 30? 
+      [breed.life_span.split()[0], 0, breed.life_span.split()[0]] 
+      : breed.life_span.split(" ");
+
+    const [breedMinHeight, , breedMaxHeight] = breed.id === 3 || breed.id === 30? 
+      [breed.height.metric.split()[0], 0, breed.height.metric.split()[0]] 
+      : breed.height.metric.split(" ");
+
     const [breedMinWeight, , breedMaxWeight] =  breed.weight.metric.split(" ");
     
     const matchesLifespan = filters.lifespan ? filters.lifespan >= breedMinLife && filters.lifespan <= breedMaxLife : true;
