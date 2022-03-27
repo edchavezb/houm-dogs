@@ -5,14 +5,14 @@ import GridView from "../components/elements/GridView";
 
 function Search({ data = "true" }) {
   const [dogs, setDogs] = useState([]);
+  const [nameInput, setNameInput] = useState("no")
 
   useEffect(() => {
-    console.log(process.env.REACT_APP_DOGS_KEY)
     getAllBreeds();
   }, [data])
 
   const getAllBreeds = () => {
-    fetch("https://api.thedogapi.com/v1/breeds?limit=10&page=0", {
+    fetch("https://api.thedogapi.com/v1/breeds", {
       headers: {
         "X-Api-Key": process.env.REACT_APP_DOGS_KEY
       },
@@ -28,10 +28,17 @@ function Search({ data = "true" }) {
       })
   }
 
+  const matchesUserQuery = (dogBreed) => {
+    const nameFilter = nameInput ? nameInput : '[a-z]+';
+    console.log(nameFilter);
+    const regExp = new RegExp(nameFilter, 'gi');
+    return regExp.test(dogBreed.name);
+  }
+
   return (
     <div className="App">
       <h1> Hi, checkout the Search component!</h1>
-      <GridView data={dogs}/>
+      <GridView data={dogs.filter(dog => matchesUserQuery(dog)).slice(0, 12)}/>
     </div>
   );
 }
