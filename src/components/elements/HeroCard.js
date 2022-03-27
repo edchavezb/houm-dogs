@@ -8,10 +8,14 @@ function HeroCard({breed}) {
   return (
     <div className={styles.card}>
       <div className={styles.imageContainer}>
-        <img className={styles.breedImage} src={breed.image.url}></img>
+        <div className={styles.breedImage} style={{backgroundImage: `url(${breed.image.url})`}}></div>
       </div>
-      <div>
-        <span> {breed.name} </span>
+      <div className={styles.breedInfo}>
+        <span className={styles.breedName}> {breed.name} </span>
+        <div className={styles.heightWeight}>
+          <span> Height: {breed.height.metric} cm </span>
+          <span> Weight: {breed.weight.metric} kg</span>
+        </div>
       </div>
       
     </div>
