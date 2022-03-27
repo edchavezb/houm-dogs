@@ -6,7 +6,7 @@ import GridView from "../components/elements/GridView";
 function Search({ data = "true" }) {
   const [dogs, setDogs] = useState([]);
   const [nameInput, setNameInput] = useState("")
-  const [filters, setFilters] = useState({minHeight: 5, maxHeight: 100, minWeight: 1, maxWeight: 120, lifespan: null, breedGroup: ""})
+  const [filters, setFilters] = useState({minHeight: 5, maxHeight: 100, minWeight: 1, maxWeight: 120, lifespan: null, breedGroup: "All"})
   const [temperament, setTemperament] = useState([])
   let debouncer;
 
@@ -62,7 +62,9 @@ function Search({ data = "true" }) {
     const matchesWeight = dogBreed.weight.metric.split(" ")[0] >= filters.minWeight && dogBreed.weight.metric.split(" ")[2] <= filters.maxWeight;
     const matchesHeight = dogBreed.height.metric.split(" ")[0] >= filters.minHeight && dogBreed.height.metric.split(" ")[2] <= filters.maxHeight;
     const matchesLifespan = filters.lifespan ? filters.lifespan >= dogBreed.life_span.split(" ")[0] && filters.lifespan <= dogBreed.life_span.split(" ")[2] : true;
-    return matchesWeight && matchesHeight && matchesLifespan;
+    const matchesBreedGroup = filters.breedGroup !== "All" ? dogBreed.breed_group === filters.breedGroup : true;
+
+    return matchesWeight && matchesHeight && matchesLifespan && matchesBreedGroup;
   }
 
   return (
@@ -85,6 +87,20 @@ function Search({ data = "true" }) {
       <div>
         <label> Life expectancy (in years): </label>
         <input name="lifespan" onChange={e => handleFilterChange(e)} type="number"></input>
+      </div>
+      <div>
+        <label> Breed group: </label>
+        <select name="breedGroup" onChange={e => handleFilterChange(e)}>
+          <option value="All">All</option>
+          <option value="Herding">Herding</option>
+          <option value="Hound">Hound</option>
+          <option value="Mixed">Mixed</option>
+          <option value="Non-Sporting">Non-Sporting</option>
+          <option value="Sporting">Sporting</option>
+          <option value="Terrier">Terrier</option>
+          <option value="Toy">Toy</option>
+          <option value="Working">Working</option>
+        </select>
       </div>
       <GridView data={dogs.filter(dog => matchesUserQuery(dog)).slice(0, 12)}/>
     </div>
