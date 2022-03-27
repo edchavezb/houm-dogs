@@ -1,7 +1,15 @@
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import { useEffect } from 'react';
+
 import logo from './logo.svg';
 import './App.css';
 
-function App() {
+function App({data = "true"}) {
+
+  useEffect(() => {
+    console.log(process.env.REACT_APP_DOGS_KEY)
+  }, [data])
+
   return (
     <div className="App">
       <header className="App-header">
