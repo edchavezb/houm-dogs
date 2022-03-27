@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import GridView from "../components/elements/GridView";
 
 function Search({ data = "true" }) {
-  const [dogs, setDogs] = useState();
+  const [dogs, setDogs] = useState([]);
 
   useEffect(() => {
     console.log(process.env.REACT_APP_DOGS_KEY)

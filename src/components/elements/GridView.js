@@ -3,10 +3,12 @@ import { useEffect } from 'react';
 
 import HeroCard from "./HeroCard";
 
+import styles from "./GridView.module.css"
+
 function GridView({data}) {
 
   return (
-    <div id='grid'>
+    <div id='grid' className={styles.gridContainer}>
       {data.map(e => {
           return (
             <HeroCard key={e.id} breed={e}></HeroCard>
