@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import AnimateHeight from 'react-animate-height';
 
 import GridView from "../components/elements/GridView";
-import breedTemps from "../temperaments";
+import breedTemps from "../components/elements/temperaments";
 import styles from "./Search.module.css"
 
 function Search() {

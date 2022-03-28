@@ -32,7 +32,7 @@ function HeroCard({breed}) {
         </div>
 
         <div className={styles.infoFooter}>
-          <button className={styles.moreButton}> See more </button>
+          <a href={breed.image.url}><button className={styles.moreButton}> See image </button></a>
           <button className={styles.likeButton}> Save breed </button>
         </div>
 
