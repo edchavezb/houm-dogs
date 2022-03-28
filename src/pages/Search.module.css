@@ -26,6 +26,17 @@
     font-weight: 600;
 }
 
+.temperButtonClicked {
+    padding: 6px 10px;
+    color: #ffffff;
+    border: solid 1px #FF452B;
+    background-color: #FF452B;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: .7em;
+    font-weight: 600;
+}
+
 .temperButton:hover {
     background-color: #eeeeee;
 }

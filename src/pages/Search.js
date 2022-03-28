@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import { useEffect, useState } from 'react';
 
 import GridView from "../components/elements/GridView";
-import temperaments from "../temperaments";
+import breedTemps from "../temperaments";
 import styles from "./Search.module.css"
 
 function Search() {
@@ -12,14 +12,18 @@ function Search() {
 
   const [nameInput, setNameInput] = useState("")
   const [filters, setFilters] = useState({minHeight: 5, maxHeight: 100, minWeight: 1, maxWeight: 120, lifespan: null, breedGroup: "All"})
-  const [temperament, setTemperament] = useState([])
+  const [temperament, setTemperament] = useState(breedTemps.map(name => {return {name, clicked: false}}))
   let debouncer;
 
   useEffect(() => {
     getBreeds();
     setPage(prevPage => prevPage + 1);
-    console.log(temperaments)
+    console.log(temperament)
   }, [])
+
+  useEffect(() => {
+    console.log(temperament)
+  }, [temperament])
 
   useEffect(() => {
     if(page < 10) { // 10 reaches end of API resources
@@ -78,6 +82,18 @@ function Search() {
       const newFilters = { ...filters, [e.target.name]: inputValue }
       setFilters(newFilters);
     }, 500);
+  }
+
+  const handleTemperaments = (e) => {
+    console.log(e.target.dataset.index)
+    const newClicked = {name: e.target.value, clicked: !(temperament[e.target.dataset.index].clicked)}
+    const filtered = temperament.filter((_trait, i) => {
+      console.log(i, e.target.dataset.index)
+      return i !== parseInt(e.target.dataset.index)
+    });
+
+    console.log(filtered);
+    setTemperament([newClicked, ...filtered].sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0)))
   }
 
   const matchesUserQuery = (breed) => {
@@ -149,9 +165,13 @@ function Search() {
 
         </div>
         <div id={styles.temperButtons}>
-          {temperaments.map(trait => {
+          {temperament.map((trait, i) => {
             return (
-              <button key={trait} className={styles.temperButton}> {trait} </button>
+              <button key={i} data-index={i} value={trait.name} 
+                className={trait.clicked ? styles.temperButtonClicked : styles.temperButton} 
+                onClick={e => handleTemperaments(e)}> 
+                  {trait.name} 
+              </button>
             )
           })}
         </div>
