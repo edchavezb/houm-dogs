@@ -15,6 +15,7 @@ function Search() {
   const [nameInput, setNameInput] = useState("")
   const [filters, setFilters] = useState({minHeight: 5, maxHeight: 100, minWeight: 1, maxWeight: 120, lifespan: null, breedGroup: "All"})
   const [temperament, setTemperament] = useState(breedTemps.map(name => {return {name, clicked: false}}))
+  const [sort, setSort] = useState(null)
   let debouncer;
 
   useEffect(() => {
@@ -24,8 +25,8 @@ function Search() {
   }, [])
 
   useEffect(() => {
-    console.log(temperament)
-  }, [temperament])
+    console.log(sort)
+  }, [sort])
 
   useEffect(() => {
     if(page < 10) { // 10 reaches end of API resources
@@ -74,6 +75,10 @@ function Search() {
   const handleNameChange = (e) => {
     clearTimeout(debouncer);
     debouncer = setTimeout(() => setNameInput(e.target.value), 500);
+  }
+
+  const handleSortChange = (e) => {
+    setSort(e.target.value)
   }
 
   const handleToggleFilters = () => {
@@ -146,8 +151,8 @@ function Search() {
             </div>
 
             <div id={styles.sortWrapper} className={styles.searchCapsule}>
-              <select id={styles.sortSelect} defaultValue="Sort by">
-                <option value="Sort by" disabled>Sort by</option>
+              <select id={styles.sortSelect} defaultValue="sort-by" onChange={(e) => handleSortChange(e)}>
+                <option value="sort-by" disabled>Sort by</option>
                 <option value="name">Name</option>
                 <option value="height">Height</option>
                 <option value="weight">Weight</option>
@@ -226,7 +231,7 @@ function Search() {
       </AnimateHeight>
 
       <section id={styles.results}>
-        <GridView data={dogs.filter(dog => matchesUserQuery(dog))}/>
+        <GridView data={dogs.filter(dog => matchesUserQuery(dog))} sorting={sort}/>
 
         {isFetching === true && (
           <div className={styles.loaderWrapper}>
