@@ -1,3 +1,71 @@
+#heroSection {
+    height: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#heroTitle {
+    color: #212121;
+    font-size: 2.5em;
+    text-align: center;
+}
+
+#searchRow {
+    display: flex;
+    justify-content: center;
+    column-gap: 10px;
+}
+
+.searchCapsule {
+    color: #212121;
+    cursor: text;
+    display: inline-flex;
+    position: relative;
+    font-size: 1.2rem;
+    box-sizing: border-box;
+    align-items: center;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 400;
+    line-height: 1.1876em;
+    letter-spacing: -0.015rem;
+    border: 1px solid #B0BEC5;
+    margin: 0;
+    padding: 0px 14px !important;
+    border-radius: 50px;
+}
+
+#searchWrapper {
+    width: 40%;
+}
+
+#searchInput {
+    font: inherit;
+    color: currentColor;
+    width: 100%;
+    border: 0;
+    height: 1.1876em;
+    margin: 0;
+    display: block;
+    padding: 6px 0 6px;
+    min-width: 0;
+    background: none;
+    box-sizing: content-box;
+    animation-name: mui-auto-fill-cancel;
+    letter-spacing: inherit;
+    animation-duration: 10ms;
+    -webkit-tap-highlight-color: transparent;
+}
+
+#searchInput:focus{
+    outline: none;
+}
+
+#sortWrapper, #filterToggle {
+    width: 15%;
+    cursor: pointer;
+}
+
 #userInput {
     display: flex;
     flex-wrap: wrap;

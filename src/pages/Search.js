@@ -127,17 +127,30 @@ function Search() {
 
   return (
     <div className="App">
-      <h1> A house is not a houm without a dog </h1>
 
-      <div id={styles.searchSection}>
-          <div>
-            <label> Enter a breed's name: </label>
-            <input onChange={e => handleNameChange(e)} type="text"></input>
+      <section id={styles.heroSection}>
+        <h1 id={styles.heroTitle}> <span>A house is not a houm</span><br/><span>without a dog</span> </h1>
+      </section>
+
+      <section id={styles.searchSection}>
+          <div id={styles.searchRow}>
+            <div id={styles.searchWrapper} className={styles.searchCapsule}>
+              <input id={styles.searchInput} onChange={e => handleNameChange(e)} type="text" placeholder="Enter a breed's name"></input>
+            </div>
+
+            <div id={styles.sortWrapper} className={styles.searchCapsule}>
+              Sort by
+            </div>
+
+            <div id={styles.filterToggle} className={styles.searchCapsule}>
+              Filters
+            </div>
+
           </div>
-      </div>
+      </section>
           
 
-      <div id={styles.userInput}>
+      <section id={styles.userInput}>
 
         <div id={styles.filterSection}>
           
@@ -193,9 +206,9 @@ function Search() {
           </div>
         </div>
 
-      </div>
+      </section>
 
-      <div id={styles.results}>
+      <section id={styles.results}>
         <GridView data={dogs.filter(dog => matchesUserQuery(dog))}/>
 
         {isFetching === true && (
@@ -203,7 +216,7 @@ function Search() {
             <div className={styles.loader}></div>
           </div>
         )}
-      </div>
+      </section>
 
     </div>
   );
