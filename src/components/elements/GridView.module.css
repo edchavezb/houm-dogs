@@ -6,3 +6,9 @@
     column-gap: 2%;
     row-gap: 15px;
 }
+
+@media (max-width: 576px) { 
+    .gridContainer {
+        width: 90%
+    }
+}
