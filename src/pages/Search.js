@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { useEffect, useState } from 'react';
+import AnimateHeight from 'react-animate-height';
 
 import GridView from "../components/elements/GridView";
 import breedTemps from "../temperaments";
@@ -9,6 +10,7 @@ function Search() {
   const [dogs, setDogs] = useState([]);
   const [isFetching, setIsFetching] = useState(false);
   const [page, setPage] = useState(0)
+  const [height, setHeight] = useState(0)
 
   const [nameInput, setNameInput] = useState("")
   const [filters, setFilters] = useState({minHeight: 5, maxHeight: 100, minWeight: 1, maxWeight: 120, lifespan: null, breedGroup: "All"})
@@ -72,6 +74,11 @@ function Search() {
   const handleNameChange = (e) => {
     clearTimeout(debouncer);
     debouncer = setTimeout(() => setNameInput(e.target.value), 500);
+  }
+
+  const handleToggleFilters = () => {
+    const newHeight = height === 0 ? "auto" : 0;
+    setHeight(newHeight);
   }
 
   const handleFilterChange = (e) => {
@@ -142,71 +149,73 @@ function Search() {
               Sort by
             </div>
 
-            <div id={styles.filterToggle} className={styles.searchCapsule}>
+            <div id={styles.filterToggle} className={styles.searchCapsule} onClick={() => handleToggleFilters()}>
               Filters
             </div>
 
           </div>
       </section>
           
+      <AnimateHeight duration={250} height={height}>
 
-      <section id={styles.userInput}>
+        <section id={styles.userInput}>
 
-        <div id={styles.filterSection}>
-          
-          <div className={styles.formGroup}>
-            <label> Weight as adult: </label>
-            <div className={styles.formRow}>
-              {'From '}<input className={styles.numInput} name="minWeight" onChange={e => handleFilterChange(e)} type="number" value={filters.minWeight}/>
-              {' to '}<input className={styles.numInput} name="maxWeight" onChange={e => handleFilterChange(e)} type="number" value={filters.maxWeight}/>{' kg'}
+          <div id={styles.filterSection}>
+            
+            <div className={styles.formGroup}>
+              <label> Weight as adult: </label>
+              <div className={styles.formRow}>
+                {'From '}<input className={styles.numInput} name="minWeight" onChange={e => handleFilterChange(e)} type="number" value={filters.minWeight}/>
+                {' to '}<input className={styles.numInput} name="maxWeight" onChange={e => handleFilterChange(e)} type="number" value={filters.maxWeight}/>{' kg'}
+              </div>
+            </div>
+            <div className={styles.formGroup}>
+              <label> Height as adult: </label>
+              <div className={styles.formRow}>
+                {'From '}<input className={styles.numInput} name="minHeight" onChange={e => handleFilterChange(e)} type="number" value={filters.minHeight}/>
+                {' to '}<input className={styles.numInput} name="maxHeight" onChange={e => handleFilterChange(e)} type="number" value={filters.maxHeight}/>{' cm'}
+              </div>
+
+            </div>
+            <div className={styles.formGroup}>
+              <label> Life expectancy: </label>
+              <input className={styles.numInput} name="lifespan" onChange={e => handleFilterChange(e)} type="number"></input> years
+            </div>
+            <div className={styles.formGroup}>
+              <label> Breed group: </label>
+              <select name="breedGroup" onChange={e => handleFilterChange(e)}>
+                <option value="All">All</option>
+                <option value="Herding">Herding</option>
+                <option value="Hound">Hound</option>
+                <option value="Mixed">Mixed</option>
+                <option value="Non-Sporting">Non-Sporting</option>
+                <option value="Sporting">Sporting</option>
+                <option value="Terrier">Terrier</option>
+                <option value="Toy">Toy</option>
+                <option value="Working">Working</option>
+              </select>
             </div>
           </div>
-          <div className={styles.formGroup}>
-            <label> Height as adult: </label>
-            <div className={styles.formRow}>
-              {'From '}<input className={styles.numInput} name="minHeight" onChange={e => handleFilterChange(e)} type="number" value={filters.minHeight}/>
-              {' to '}<input className={styles.numInput} name="maxHeight" onChange={e => handleFilterChange(e)} type="number" value={filters.maxHeight}/>{' cm'}
+
+          <div id={styles.temperSection}>
+            <div id={styles.temperMessage}>
+              Select one or more temperament traits:
             </div>
+            <div id={styles.temperWrapper}>
+              {temperament.map((trait, i) => {
+                return (
+                  <button key={i} data-index={i} value={trait.name} 
+                    className={trait.clicked ? styles.temperButtonClicked : styles.temperButton} 
+                    onClick={e => handleTemperaments(e)}> 
+                      {trait.name} 
+                  </button>
+                )
+              })}
+            </div>
+          </div>
 
-          </div>
-          <div className={styles.formGroup}>
-            <label> Life expectancy: </label>
-            <input className={styles.numInput} name="lifespan" onChange={e => handleFilterChange(e)} type="number"></input> years
-          </div>
-          <div className={styles.formGroup}>
-            <label> Breed group: </label>
-            <select name="breedGroup" onChange={e => handleFilterChange(e)}>
-              <option value="All">All</option>
-              <option value="Herding">Herding</option>
-              <option value="Hound">Hound</option>
-              <option value="Mixed">Mixed</option>
-              <option value="Non-Sporting">Non-Sporting</option>
-              <option value="Sporting">Sporting</option>
-              <option value="Terrier">Terrier</option>
-              <option value="Toy">Toy</option>
-              <option value="Working">Working</option>
-            </select>
-          </div>
-        </div>
-
-        <div id={styles.temperSection}>
-          <div id={styles.temperMessage}>
-            Select one or more temperament traits:
-          </div>
-          <div id={styles.temperWrapper}>
-            {temperament.map((trait, i) => {
-              return (
-                <button key={i} data-index={i} value={trait.name} 
-                  className={trait.clicked ? styles.temperButtonClicked : styles.temperButton} 
-                  onClick={e => handleTemperaments(e)}> 
-                    {trait.name} 
-                </button>
-              )
-            })}
-          </div>
-        </div>
-
-      </section>
+        </section>
+      </AnimateHeight>
 
       <section id={styles.results}>
         <GridView data={dogs.filter(dog => matchesUserQuery(dog))}/>
