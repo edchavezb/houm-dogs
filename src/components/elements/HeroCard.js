@@ -18,9 +18,9 @@ function HeroCard({breed}) {
         <div className={styles.infoBody}>
           <span className={styles.breedName}> {breed.name} </span>
           <div className={styles.breedStats}>
-            <div className={styles.statsRow}><span>Altura:</span> <span>{breed.height.metric} cm</span></div>
-            <div className={styles.statsRow}><span>Peso:</span> <span>{breed.weight.metric} kg</span></div>
-            <div className={styles.statsRow}><span>Vida promedio:</span> <span>{breed.life_span.split(" ").slice(0, 3).join(" ")} años</span></div>
+            <div className={styles.statsRow}><span>Height:</span> <span>{breed.height.metric} cm</span></div>
+            <div className={styles.statsRow}><span>Weight:</span> <span>{breed.weight.metric} kg</span></div>
+            <div className={styles.statsRow}><span>Average lifespan:</span> <span>{breed.life_span.split(" ").slice(0, 3).join(" ")} years</span></div>
           </div>
           <div className={styles.temperContainer}>
             {breed.temperament.split(", ").map(trait => {
@@ -32,8 +32,8 @@ function HeroCard({breed}) {
         </div>
 
         <div className={styles.infoFooter}>
-          <button className={styles.moreButton}> Ver más </button>
-          <button className={styles.likeButton}> Me gusta </button>
+          <button className={styles.moreButton}> See more </button>
+          <button className={styles.likeButton}> Save breed </button>
         </div>
 
       </div>
