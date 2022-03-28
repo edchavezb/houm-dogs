@@ -129,65 +129,81 @@ function Search() {
     <div className="App">
       <h1> A house is not a houm without a dog </h1>
 
-      <div id={styles.filterSection}>
-        <div>
-          <label> Enter a breed's name: </label>
-          <input onChange={e => handleNameChange(e)} type="text"></input>
+      <div id={styles.searchSection}>
+          <div>
+            <label> Enter a breed's name: </label>
+            <input onChange={e => handleNameChange(e)} type="text"></input>
+          </div>
+      </div>
+          
+
+      <div id={styles.userInput}>
+
+        <div id={styles.filterSection}>
+          
+          <div className={styles.formGroup}>
+            <label> Weight as adult: </label>
+            <div className={styles.formRow}>
+              {'From '}<input className={styles.numInput} name="minWeight" onChange={e => handleFilterChange(e)} type="number" value={filters.minWeight}/>
+              {' to '}<input className={styles.numInput} name="maxWeight" onChange={e => handleFilterChange(e)} type="number" value={filters.maxWeight}/>{' kg'}
+            </div>
+          </div>
+          <div className={styles.formGroup}>
+            <label> Height as adult: </label>
+            <div className={styles.formRow}>
+              {'From '}<input className={styles.numInput} name="minHeight" onChange={e => handleFilterChange(e)} type="number" value={filters.minHeight}/>
+              {' to '}<input className={styles.numInput} name="maxHeight" onChange={e => handleFilterChange(e)} type="number" value={filters.maxHeight}/>{' cm'}
+            </div>
+
+          </div>
+          <div className={styles.formGroup}>
+            <label> Life expectancy: </label>
+            <input className={styles.numInput} name="lifespan" onChange={e => handleFilterChange(e)} type="number"></input> years
+          </div>
+          <div className={styles.formGroup}>
+            <label> Breed group: </label>
+            <select name="breedGroup" onChange={e => handleFilterChange(e)}>
+              <option value="All">All</option>
+              <option value="Herding">Herding</option>
+              <option value="Hound">Hound</option>
+              <option value="Mixed">Mixed</option>
+              <option value="Non-Sporting">Non-Sporting</option>
+              <option value="Sporting">Sporting</option>
+              <option value="Terrier">Terrier</option>
+              <option value="Toy">Toy</option>
+              <option value="Working">Working</option>
+            </select>
+          </div>
         </div>
-        <div>
-          <label> Weight as adult (in kg): </label>
-          From <input name="minWeight" onChange={e => handleFilterChange(e)} type="number" value={filters.minWeight}/>
-          To <input name="maxWeight" onChange={e => handleFilterChange(e)} type="number" value={filters.maxWeight}/>
+
+        <div id={styles.temperSection}>
+          <div id={styles.temperMessage}>
+            Select one or more temperament traits:
+          </div>
+          <div id={styles.temperWrapper}>
+            {temperament.map((trait, i) => {
+              return (
+                <button key={i} data-index={i} value={trait.name} 
+                  className={trait.clicked ? styles.temperButtonClicked : styles.temperButton} 
+                  onClick={e => handleTemperaments(e)}> 
+                    {trait.name} 
+                </button>
+              )
+            })}
+          </div>
         </div>
-        <div>
-          <label> Height as adult (in cm): </label>
-          From <input name="minHeight" onChange={e => handleFilterChange(e)} type="number" value={filters.minHeight}/>
-          To <input name="maxHeight" onChange={e => handleFilterChange(e)} type="number" value={filters.maxHeight}/>
-        </div>
-        <div>
-          <label> Life expectancy (in years): </label>
-          <input name="lifespan" onChange={e => handleFilterChange(e)} type="number"></input>
-        </div>
-        <div>
-          <label> Breed group: </label>
-          <select name="breedGroup" onChange={e => handleFilterChange(e)}>
-            <option value="All">All</option>
-            <option value="Herding">Herding</option>
-            <option value="Hound">Hound</option>
-            <option value="Mixed">Mixed</option>
-            <option value="Non-Sporting">Non-Sporting</option>
-            <option value="Sporting">Sporting</option>
-            <option value="Terrier">Terrier</option>
-            <option value="Toy">Toy</option>
-            <option value="Working">Working</option>
-          </select>
-        </div>
+
       </div>
 
-      <div id={styles.temperSection}>
-        <div id={styles.temperToggle}>
+      <div id={styles.results}>
+        <GridView data={dogs.filter(dog => matchesUserQuery(dog))}/>
 
-        </div>
-        <div id={styles.temperButtons}>
-          {temperament.map((trait, i) => {
-            return (
-              <button key={i} data-index={i} value={trait.name} 
-                className={trait.clicked ? styles.temperButtonClicked : styles.temperButton} 
-                onClick={e => handleTemperaments(e)}> 
-                  {trait.name} 
-              </button>
-            )
-          })}
-        </div>
+        {isFetching === true && (
+          <div className={styles.loaderWrapper}>
+            <div className={styles.loader}></div>
+          </div>
+        )}
       </div>
-
-      <GridView data={dogs.filter(dog => matchesUserQuery(dog))}/>
-
-      {isFetching === true && (
-        <div className={styles.loaderWrapper}>
-          <div className={styles.loader}></div>
-        </div>
-      )}
 
     </div>
   );
