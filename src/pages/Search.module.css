@@ -43,7 +43,7 @@
     font: inherit;
     color: currentColor;
     width: 100%;
-    border: 0;
+    border: 0 transparent;
     height: 1.1876em;
     margin: 0;
     display: block;
@@ -55,10 +55,17 @@
     letter-spacing: inherit;
     animation-duration: 10ms;
     -webkit-tap-highlight-color: transparent;
+    outline-style: none !important;
+    outline: solid 0 !important;
 }
 
 #searchInput:focus, #sortSelect:focus{
     outline: none;
+    outline-style: none
+}
+
+option[disabled] {
+    display: none;
 }
 
 #sortWrapper, #filterToggle {

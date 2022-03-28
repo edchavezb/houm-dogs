@@ -13,7 +13,7 @@ function Search() {
   const [height, setHeight] = useState(0)
 
   const [nameInput, setNameInput] = useState("")
-  const [filters, setFilters] = useState({minHeight: 5, maxHeight: 100, minWeight: 1, maxWeight: 120, lifespan: null, breedGroup: "All"})
+  const [filters, setFilters] = useState({minHeight: 5, maxHeight: 100, minWeight: 0, maxWeight: 120, lifespan: null, breedGroup: "All"})
   const [temperament, setTemperament] = useState(breedTemps.map(name => {return {name, clicked: false}}))
   const [sort, setSort] = useState(null)
   let debouncer;
@@ -178,21 +178,37 @@ function Search() {
             <div className={styles.formGroup}>
               <label> Weight as adult: </label>
               <div className={styles.formRow}>
-                {'From '}<input className={styles.numInput} name="minWeight" onChange={e => handleFilterChange(e)} type="number" value={filters.minWeight}/>
-                {' to '}<input className={styles.numInput} name="maxWeight" onChange={e => handleFilterChange(e)} type="number" value={filters.maxWeight}/>{' kg'}
+                {'From '}
+                <input className={styles.numInput} name="minWeight" onChange={e => handleFilterChange(e)} 
+                  type="number" defaultValue={filters.minWeight} step="5" min="0" max="120"
+                />
+                {' to '}
+                <input className={styles.numInput} name="maxWeight" onChange={e => handleFilterChange(e)} 
+                  type="number" defaultValue={filters.maxWeight} step="5" min="0" max="120"
+                />
+                {' kg'}
               </div>
             </div>
             <div className={styles.formGroup}>
               <label> Height as adult: </label>
               <div className={styles.formRow}>
-                {'From '}<input className={styles.numInput} name="minHeight" onChange={e => handleFilterChange(e)} type="number" value={filters.minHeight}/>
-                {' to '}<input className={styles.numInput} name="maxHeight" onChange={e => handleFilterChange(e)} type="number" value={filters.maxHeight}/>{' cm'}
+                {'From '}
+                <input className={styles.numInput} name="minHeight" onChange={e => handleFilterChange(e)} 
+                  type="number" defaultValue={filters.minHeight} step="5" min="5" max="100"
+                />
+                {' to '}
+                <input className={styles.numInput} name="maxHeight" onChange={e => handleFilterChange(e)} 
+                  type="number" defaultValue={filters.maxHeight} step="5" min="5" max="100"
+                />
+                {' cm'}
               </div>
 
             </div>
             <div className={styles.formGroup}>
               <label> Life expectancy: </label>
-              <input className={styles.numInput} name="lifespan" onChange={e => handleFilterChange(e)} type="number"></input> years
+              <input className={styles.numInput} name="lifespan" onChange={e => handleFilterChange(e)} 
+                type="number" step="2" min="8" max="20"
+              /> years
             </div>
             <div className={styles.formGroup}>
               <label> Breed group: </label>
