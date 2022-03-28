@@ -1,13 +1,15 @@
 .gridContainer {
-    padding: 0px 100px;
+    padding: 0px 0px;
+    box-sizing: border-box;
     width: 80%;
+    max-width: 1200px;
     display: flex;
     flex-wrap: wrap;
     column-gap: 2%;
     row-gap: 15px;
 }
 
-@media (max-width: 576px) { 
+@media (max-width: 768px) { 
     .gridContainer {
         width: 90%
     }

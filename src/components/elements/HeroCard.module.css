@@ -145,3 +145,22 @@
         height: 100%;
     }
 }
+
+@media (max-width: 420px) { 
+    .card {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .imageContainer {
+        width: 100%
+    }
+
+    .breedInfo {
+        width: 100%
+    }
+
+    .breedImage {
+        height: 180px;
+    }
+}
