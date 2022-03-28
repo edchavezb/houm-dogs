@@ -136,7 +136,7 @@ function Search() {
     <div className="App">
 
       <section id={styles.heroSection}>
-        <h1 id={styles.heroTitle}> <span>A house is not a houm</span><br/><span>without a dog</span> </h1>
+        <h1 id={styles.heroTitle}> <span>A house is not a houm</span><br/><span>without a dog 🐶</span> </h1>
       </section>
 
       <section id={styles.searchSection}>
@@ -146,7 +146,15 @@ function Search() {
             </div>
 
             <div id={styles.sortWrapper} className={styles.searchCapsule}>
-              Sort by
+              <select id={styles.sortSelect} defaultValue="Sort by">
+                <option value="Sort by" disabled>Sort by</option>
+                <option value="name">Name</option>
+                <option value="height">Height</option>
+                <option value="weight">Weight</option>
+                <option value="life_span">Lifespan</option>
+                <option value="breed_group">Breed group</option>
+
+              </select>
             </div>
 
             <div id={styles.filterToggle} className={styles.searchCapsule} onClick={() => handleToggleFilters()}>
