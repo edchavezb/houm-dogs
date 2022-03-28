@@ -1,6 +1,3 @@
-import { BrowserRouter as Router, Route } from "react-router-dom";
-import { useEffect } from 'react';
-
 import HeroCard from "./HeroCard";
 
 import styles from "./GridView.module.css"
@@ -15,7 +12,6 @@ function GridView({data, sorting}) {
     switch (sortProp){
       case "height":
       case "weight":
-        console.log("Height or Weight")
         sortedArray = arrObj.sort((a, b) => {
           const aProp = parseInt(a[sortProp].metric.split(" ")[0]) + parseInt(a[sortProp].metric.split(" ")[2]) / 2;
           const bProp = parseInt(b[sortProp].metric.split(" ")[0]) + parseInt(b[sortProp].metric.split(" ")[2]) / 2;

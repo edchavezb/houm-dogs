@@ -1,4 +1,3 @@
-import { BrowserRouter as Router, Route } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import AnimateHeight from 'react-animate-height';
 
@@ -21,12 +20,7 @@ function Search() {
   useEffect(() => {
     getBreeds();
     setPage(prevPage => prevPage + 1);
-    console.log(temperament)
   }, [])
-
-  useEffect(() => {
-    console.log(sort)
-  }, [sort])
 
   useEffect(() => {
     if(page < 10) { // 10 reaches end of API resources
@@ -34,18 +28,8 @@ function Search() {
       return () => window.removeEventListener("scroll", handleScrolling);
     }
   }, [page])
-
-  useEffect(() => {
-    console.log(dogs)
-    console.log([...new Set(dogs.reduce((prev, curr) => [...prev, ...curr.temperament.split(", ")], []))].sort())
-  }, [dogs])
-
-  useEffect(() => {
-    console.log(filters)
-  }, [filters])
   
   const handleScrolling = () => {
-
     if (window.innerHeight + document.documentElement.scrollTop + 1 >= document.documentElement.scrollHeight){
       setIsFetching(true);
       setTimeout(() => getBreeds(), 500);
@@ -54,7 +38,6 @@ function Search() {
   }
 
   const getBreeds = () => {
-    console.log(page);
     fetch(`https://api.thedogapi.com/v1/breeds?limit=12&page=${page}`, {
       headers: {
         "X-Api-Key": process.env.REACT_APP_DOGS_KEY
@@ -64,7 +47,6 @@ function Search() {
         res.json().then(data => {
           setDogs(previousState => [...previousState, ...data]);
           setIsFetching(false);
-          console.log(data)
         })
       })
       .catch(err => {
@@ -97,14 +79,11 @@ function Search() {
   }
 
   const handleTemperaments = (e) => {
-    console.log(e.target.dataset.index)
     const newClicked = {name: e.target.value, clicked: !(temperament[e.target.dataset.index].clicked)}
     const filtered = temperament.filter((_trait, i) => {
-      console.log(i, e.target.dataset.index)
       return i !== parseInt(e.target.dataset.index)
     });
 
-    console.log(filtered);
     setTemperament([newClicked, ...filtered].sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0)))
   }
 
@@ -142,6 +121,7 @@ function Search() {
 
       <section id={styles.heroSection}>
         <h1 id={styles.heroTitle}> <span>A house is not a houm</span><br/><span>without a dog 🐶</span> </h1>
+        <div id={styles.subTitle}> Search dog breeds and pick your new furry friend </div>
       </section>
 
       <section id={styles.searchSection}>
