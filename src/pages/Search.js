@@ -118,7 +118,11 @@ function Search() {
     const matchesWeight = breedMinWeight >= filters.minWeight && breedMaxWeight <= filters.maxWeight;
     const matchesBreedGroup = filters.breedGroup !== "All" ? breed.breed_group === filters.breedGroup : true;
 
-    return matchesLifespan && matchesHeight && matchesWeight  && matchesBreedGroup;
+    const matchesTemperament = temperament.some(e => e.clicked === true) ? 
+      temperament.filter(e => e.clicked === true).map(e => e.name).some(e => breed.temperament.split(", ").includes(e))
+      : true;
+
+    return matchesLifespan && matchesHeight && matchesWeight && matchesBreedGroup && matchesTemperament;
   }
 
   return (
